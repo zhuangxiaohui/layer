@@ -299,7 +299,19 @@ Class.pt.creat = function(){
   config.time <= 0 || setTimeout(function(){
     layer.close(that.index)
   }, config.time);
-  that.move().callback();
+   //zxh  处理iframe传值的问题
+  if(  config.type == 2){
+    var  $iframe = $('#'+ doms[4] + times ),iframe0 = $iframe[0];
+    iframe0.dialog = that;//增加窗口对dialog对象的引用
+    iframe0.dialog.callback = that.config.callback;//传递回调
+    iframe0.dialog.params = that.config.params;//传递的参数
+    iframe0.close= function(indx){ //关闭窗口
+  			 if(!indx)
+  				  indx = that.index;
+  		  layer.close(indx);
+  	}
+  }
+  that.move().back();
   
   //为兼容jQuery3.0的css动画影响元素尺寸计算
   if(doms.anim[config.shift]){
